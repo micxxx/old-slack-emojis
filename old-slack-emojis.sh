@@ -98,9 +98,11 @@ fi
 
 ## Write main script
 
+BASE_64_EMOJI=$(base64 -w0 slack_2016_apple_sprite_64.png)
+
 cat <<EOF > $SLACK_DIR/old-slack-emojis.js
 var emojiStyle = document.createElement('style');
-emojiStyle.innerText = ".emoji-sizer[style*='sheet_google_64_indexed_256.png'], .emoji[style*='sheet_google_64_indexed_256.png'] { background-image: url('https://old-slack-emojis.cf/cdn/slack_2016_apple_sprite_64.png') !important; }";
+emojiStyle.innerText = ".emoji-sizer[style*='sheet_google_64_indexed_256.png'], .emoji[style*='sheet_google_64_indexed_256.png'] { background-image: url(data:image/png;base64,$BASE_64_EMOJI) !important; }";
 document.head.appendChild(emojiStyle);
 EOF
 

@@ -1,4 +1,5 @@
 @ECHO OFF
+SETLOCAL EnableDelayedExpansion
 
 :: User input
 
@@ -69,10 +70,14 @@ IF "%UNINSTALL%" == "-u" (
 
 :: Write main script
 
+call base64encode slack_2016_apple_sprite_64.png slack_2016_apple_sprite_64.png.b64
+
 >"%SLACK_DIR%\old-slack-emojis.js" (
-    ECHO.var emojiStyle = document.createElement('style'^);
-    ECHO.emojiStyle.innerText = ".emoji-sizer[style*='sheet_google_64_indexed_256.png'], .emoji[style*='sheet_google_64_indexed_256.png'] { background-image: url('https://old-slack-emojis.cf/cdn/slack_2016_apple_sprite_64.png') !important; }";
-    ECHO.document.head.appendChild(emojiStyle^);
+    <nul SET /P="var emojiStyle = document.createElement('style');"
+    <nul SET /P="emojiStyle.innerText = ".emoji-sizer[style*='sheet_google_64_indexed_256.png'], .emoji[style*='sheet_google_64_indexed_256.png'] { background-image: url(data:image/png;base64,"
+	for /f "Tokens=* Delims=" %%x in (slack_2016_apple_sprite_64.png.b64) do <nul SET /P=%%x
+	<nul SET /P=") ^!important; }";"
+    <nul SET /P="document.head.appendChild(emojiStyle);"
 )
 
 
@@ -134,3 +139,4 @@ IF NOT EXIST "%~1.osebak" (
 
 EXIT /B 0
 :: end inject_loader
+
